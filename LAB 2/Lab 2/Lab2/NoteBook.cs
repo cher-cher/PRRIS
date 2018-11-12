@@ -21,7 +21,7 @@ namespace Lab2
             int result = 0;
             foreach ( string note in _notebook )
             {
-                if ( note.Contains( value ) )
+                if ( note.StartsWith( value ) )
                 {
                     result++;
                 }

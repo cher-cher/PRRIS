@@ -14,6 +14,7 @@ namespace Lab2Tests
             noteBook.Add("alex");
             noteBook.Add("alexey");
             noteBook.Add("alexander");
+            noteBook.Add( "malexander" );
             //ACT
             int result = noteBook.Find( "alex" );
             //ASSERT
