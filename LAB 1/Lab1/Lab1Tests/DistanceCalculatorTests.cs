@@ -49,7 +49,7 @@ namespace Lab1.Tests
             int minResult = distanceCalculator.FindMinDistance();
             int maxResult = distanceCalculator.FindMaxDistance();
             //ASSERT
-            Assert.AreEqual( -1, minResult );
+            Assert.AreEqual( 2147483646, minResult );
             Assert.AreEqual( -1, maxResult );
         }
     }

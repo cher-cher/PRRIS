@@ -9,64 +9,72 @@ namespace Lab1
         private string _word1;
         private string _word2;
         private List<string> _text;
-        private List<int> _positionsWord1 = new List<int>();
-        private List<int> _positionsWord2 = new List<int>();
 
         public DistanceCalculator( string text, string word1, string word2 )
         {
             _word1 = word1;
             _word2 = word2;
             _text = text.Split().ToList();
-            FillWordsPosition();
         }
 
         public int FindMinDistance()
         {
-            int result = Int32.MaxValue;
-            if ( _positionsWord1.Count > 0 && _positionsWord2.Count > 0 )
+            int minDistance = Int32.MaxValue;
+            int lastPosWord1 = -1;
+            int lastPosWord2 = -1;
+            for ( int i = 0; i < _text.Count; i++ )
             {
-                foreach ( var positionWord1 in _positionsWord1 )
+                string currentWord = _text[ i ];
+                if ( currentWord == _word1 )
                 {
-                    foreach ( var positionWord2 in _positionsWord2 )
+                    lastPosWord1 = i;
+                    int distance = lastPosWord1 - lastPosWord2;
+                    if ( lastPosWord2 >= 0 && minDistance > distance )
                     {
-                        int distance = Math.Abs( positionWord2 - positionWord1 );
-                        if ( distance < result )
-                        {
-                            result = distance;
-                        }
+                        minDistance = distance;
                     }
                 }
-
-                return result - 1;
+                else if ( currentWord == _word2 )
+                {
+                    lastPosWord2 = i;
+                    int distance = lastPosWord2 - lastPosWord1;
+                    if ( lastPosWord1 >= 0 && minDistance > distance )
+                    {
+                        minDistance = distance;
+                    }
+                }
             }
 
-            return -1;
+            return minDistance - 1;
         }
 
         public int FindMaxDistance()
         {
-            if ( _positionsWord1.Count > 0 && _positionsWord2.Count > 0 )
+            List<int> positionsWord1 = new List<int>();
+            List<int> positionsWord2 = new List<int>();
+            FillWordsPosition( positionsWord1, positionsWord2 );
+            if ( positionsWord1.Count > 0 && positionsWord2.Count > 0 )
             {
                 return Math.Max(
-                           Math.Abs( _positionsWord1.Min() - _positionsWord2.Max() ),
-                           Math.Abs( _positionsWord2.Min() - _positionsWord1.Max() ) ) - 1;
+                           Math.Abs( positionsWord1.Min() - positionsWord2.Max() ),
+                           Math.Abs( positionsWord2.Min() - positionsWord1.Max() ) ) - 1;
             }
 
             return -1;
         }
 
-        private void FillWordsPosition()
+        private void FillWordsPosition( List<int> positionsWord1, List<int> positionsWord2 )
         {
             for ( int i = 0; i < _text.Count; i++ )
             {
                 if ( _text[ i ] == _word1 )
                 {
-                    _positionsWord1.Add( i );
+                    positionsWord1.Add( i );
                 }
 
                 if ( _text[ i ] == _word2 )
                 {
-                    _positionsWord2.Add( i );
+                    positionsWord2.Add( i );
                 }
             }
         }
